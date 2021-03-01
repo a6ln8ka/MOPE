@@ -66,8 +66,20 @@ yet = a[0] + a[1] * x0[0] + a[2] * x0[1] + a[3] * x0[2]
 print("Yет =", yet)
 
 # find optimal value
-ymax = max(y)
-for i in range(8):
-    if y[i] == ymax:
-        print("max(Y) = {} = Y({}, {}, {})".format(ymax, x1[i], x2[i], x3[i]))
-        break
+# ymax = max(y)
+# for i in range(8):
+#     if y[i] == ymax:
+#         print("max(Y) = {} = Y({}, {}, {})".format(ymax, x1[i], x2[i], x3[i]))
+#         break
+
+# variant 121
+avg_y = sum(y)/len(y)
+sorted_y = sorted(y)
+for i in range(len(y)-1):
+    if sorted_y[i] < avg_y < sorted_y[i + 1]:
+        optimal_y = sorted_y[i]
+        print(optimal_y)
+        for j in range(len(y)):
+            if y[j] == optimal_y:
+                print("Optimal value: {} = Y({}, {}, {})".format(optimal_y, x1[j], x2[j], x3[j]))
+                break
