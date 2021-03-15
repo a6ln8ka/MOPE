@@ -37,25 +37,25 @@ x1_max = 60
 x2_min = -70
 x2_max = -10
 
-# y1 = []
-# y2 = []
-# y3 = []
-# y4 = []
-# y5 = []
-# for i in range(4):
-#     y1.append(random.randint(y_min, y_max))
-#     y2.append(random.randint(y_min, y_max))
-#     y3.append(random.randint(y_min, y_max))
-#     y4.append(random.randint(y_min, y_max))
-#     y5.append(random.randint(y_min, y_max))
+y1 = []
+y2 = []
+y3 = []
+y4 = []
+y5 = []
+for i in range(3):
+    y1.append(random.randint(y_min, y_max))
+    y2.append(random.randint(y_min, y_max))
+    y3.append(random.randint(y_min, y_max))
+    y4.append(random.randint(y_min, y_max))
+    y5.append(random.randint(y_min, y_max))
 
 x_n = [[-1, 1, -1], [-1, -1, 1]]
 
-y1 = [9, 15, 20]
-y2 = [10, 14, 18]
-y3 = [11, 10, 12]
-y4 = [15, 12, 10]
-y5 = [9, 14, 16]
+# y1 = [9, 15, 20]
+# y2 = [10, 14, 18]
+# y3 = [11, 10, 12]
+# y4 = [15, 12, 10]
+# y5 = [9, 14, 16]
 
 print("матриця планування:\n X1 | X2 | Y1 | Y2 | Y3 | Y4 | Y5")
 for i in range(3):
@@ -90,7 +90,6 @@ Ruv1 = abs(Ouv1 - 1)/major_deviation
 Ruv2 = abs(Ouv2 - 1)/major_deviation
 Ruv3 = abs(Ouv3 - 1)/major_deviation
 print("\nR\u1d64\u1d651 = {:.4f}\nR\u1d64\u1d652 = {:.4f}\nR\u1d64\u1d653 = {:.4f}".format(Ruv1, Ruv2, Ruv3))
-
 # Перевірка однорідності дисперсії
 p_list = (0.99, 0.98, 0.95, 0.90)
 rkr_table = [[2, 1.73, 1.72, 1.71, 1.69],
@@ -105,7 +104,7 @@ p = 0
 for R in (Ruv1, Ruv2, Ruv3):
     if R > rkr_table[m][0]:
         print("Дисперсія неоднорідна")
-        break
+        exit()
     for i in range(5):
         if R < rkr_table[m_table][i]:
             p = i-1
