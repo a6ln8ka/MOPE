@@ -91,6 +91,26 @@ Ruv2 = abs(Ouv2 - 1)/major_deviation
 Ruv3 = abs(Ouv3 - 1)/major_deviation
 print("\nR\u1d64\u1d651 = {:.4f}\nR\u1d64\u1d652 = {:.4f}\nR\u1d64\u1d653 = {:.4f}".format(Ruv1, Ruv2, Ruv3))
 
+# Перевірка однорідності дисперсії
+p_list = (0.99, 0.98, 0.95, 0.90)
+rkr_table = [[2, 1.73, 1.72, 1.71, 1.69],
+             [6, 2.16, 2.13, 2.10, 2.00],
+             [8, 2.43, 4.37, 2.27, 2.17],
+             [10, 2.62, 2.54, 2.41, 2.29],
+             [12, 2.75, 2.66, 2.52, 2.39],
+             [15, 2.9, 2.8, 2.64, 2.49],
+             [20, 3.08, 2.96, 2.78, 2.62]]
+m_table = min(x for x in range(7) if rkr_table[x][0] > m)
+p = 0
+for R in (Ruv1, Ruv2, Ruv3):
+    if R > rkr_table[m][0]:
+        print("Дисперсія неоднорідна")
+        break
+    for i in range(5):
+        if R < rkr_table[m_table][i]:
+            p = i-1
+print("Дисперсія однорідна. Довірча йморірність р =", p_list[p])
+
 mx1 = sum(x_n[0])/3
 mx2 = sum(x_n[1])/3
 my = sum(avg_y)/3
