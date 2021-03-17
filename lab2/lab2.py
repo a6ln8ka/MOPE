@@ -22,6 +22,12 @@ def get_dispersion(array, avg_y):
     return result
 
 
+def calculate_F(su, sv):
+    if su >= sv:
+        return su/sv
+    elif su < sv:
+        return sv/su
+
 def dete(a):
     return (a[0][0] * (a[1][1] * a[2][2] - a[2][1] * a[1][2])
            - a[1][0] * (a[0][1] * a[2][2] - a[2][1] * a[0][2])
@@ -74,9 +80,9 @@ print("Значення дисперсії по рядках: \u03c3\u00b2(y1) =
 major_deviation = math.sqrt((2 * (2 * m - 2)) / (m * (m - 4)))
 print("Основне відхилення: ", round(major_deviation, 3))
 
-Fuv1 = sigma[0] / sigma[1]
-Fuv2 = sigma[2] / sigma[0]
-Fuv3 = sigma[2] / sigma[1]
+Fuv1 = calculate_F(sigma[0], sigma[1])
+Fuv2 = calculate_F(sigma[2], sigma[0])
+Fuv3 = calculate_F(sigma[2], sigma[1])
 print("\nF\u1d64\u1d651 = {:.4f}\nF\u1d64\u1d652 = {:.4f}\nF\u1d64\u1d653 = {:.4f}".format(Fuv1, Fuv2, Fuv3))
 
 Ouv1 = ((m - 2) / m) * Fuv1
