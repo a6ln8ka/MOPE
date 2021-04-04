@@ -1,6 +1,7 @@
 import random
 import math
 import numpy as np
+import time
 
 
 def get_avg(array):
@@ -151,6 +152,7 @@ else:
     exit()
 
 # оцінка значимості коефіцієнтів регресії за критерієм Стьюдента
+time1 = float(time.time())
 sb = sum(sigma) / n
 s2bs = sb / (n * m)
 sbs = math.sqrt(s2bs)
@@ -183,6 +185,7 @@ for j in range(4):
             else:
                 y[j] += b[i] * x[i - 1][j]
             d += 1/4
+time2 = float(time.time())
 print("d = {}".format(d))
 print("Підставимо значення факторів з матриці планування, y =", y[0], y[1], y[2], y[3])
 
@@ -200,3 +203,5 @@ if Fp < F8_table[int(f4-1)]:
     print("Рівняння регресії адекватно оригіналу при рівні значимості 0.05")
 else:
     print("Рівняння регресії неадекватно оригіналу при рівні значимості 0.05")
+
+print("Додаткове завдання: час пошуку значимих коефіціентів", time2-time1)
