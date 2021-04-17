@@ -1,5 +1,6 @@
 import random
 import math
+import time
 
 
 def get_avg(array):
@@ -117,6 +118,8 @@ for i in range(8):
           " + x23 * {:.3f} + x123 * {:.3f}"
           " = {:.3f}".format(b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7], result[i]))
 
+# Перевірка однорідності дисперсії
+time11 = float(time.perf_counter())
 sigma = get_dispersion(y, avg_y)
 print("Значення дисперсії по рядках: \u03c3\u00b2(y1) = {:.2f},"
       " \u03c3\u00b2(y2) = {:.2f},"
@@ -132,11 +135,15 @@ print("Gp = ", gp)
 f1 = m-1
 f2 = n
 if gp < 0.5157:
+    time12 = float(time.perf_counter())
     print("Дисперсія однорідна")
 else:
+    time12 = float(time.perf_counter())
     print("Дисперсія неоднорідна")
     exit()
 
+# оцінка значимості коефіцієнтів регресії за критерієм Стьюдента
+time21 = float(time.perf_counter())
 sb = sum(sigma) / n
 s2bs = sb / (n * m)
 sbs = math.sqrt(s2bs)
@@ -169,10 +176,12 @@ for i in range(4):
                 y_[j] += b[i]
             else:
                 y_[j] += b[i] * x_matr[2][j]
-
+time22 = float(time.perf_counter())
 print("d = {}".format(d))
 print("Підставимо значення факторів з матриці планування, y =", y_[0], y_[1], y_[2], y_[3])
 
+# критерій Фішера
+time31 = float(time.perf_counter())
 s2ad = (m / (n - d)) * sum((y_[i] - avg_y[i])**2 for i in range(4))
 print("S\u00b2ад = {:.3f}".format(s2ad))
 
@@ -182,6 +191,13 @@ print("Критерій Фішера Fp =", Fp)
 
 F8_table = [5.3, 4.5, 4.1, 3.8, 3.7, 3.6, 3.3, 3.1, 2.9]
 if Fp < F8_table[int(f4-1)]:
+    time32 = float(time.perf_counter())
     print("Рівняння регресії адекватно оригіналу при рівні значимості 0.05")
 else:
+    time32 = float(time.perf_counter())
     print("Рівняння регресії неадекватно оригіналу при рівні значимості 0.05")
+
+print("Додаткове завдання")
+print("Час виконання перевірки однорідності дисперсії за критерієм Кохрена", time12-time11)
+print("Час виконання перевірки значущості коефіцієнтів за критерієм Стьюдента", time22-time21)
+print("Час виконання перевірки адекватності за критерієм Фішера", time32-time31)
