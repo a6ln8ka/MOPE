@@ -1,6 +1,5 @@
 import random
 import numpy as np
-from pyDOE2 import *
 import math
 
 def get_avg(array):
@@ -89,7 +88,6 @@ def student(x, y, y_aver, n, m):
     return ts
 
 
-# todo: change to your variant
 x1min = -9
 x1max = 1
 x2min = -2
@@ -259,6 +257,9 @@ print("Критерій Фішера Fp =", Fp)
 
 F8_table = 2.16
 if Fp < F8_table:
-    print("Рівняння регресії адекватно оригіналу при рівні значимості 0.05")
+    if 10-d > 1:
+        print("Рівняння регресії адекватно оригіналу при рівні значимості 0.05")
+    else:
+        print("Рівняння регресії неадекватно оригіналу при рівні значимості 0.05")
 else:
     print("Рівняння регресії неадекватно оригіналу при рівні значимості 0.05")
