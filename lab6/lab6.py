@@ -162,6 +162,43 @@ def fisher_criteria(m, N, d, x_table, y_table, b_coefficients, importance):
     return True if f_p < f_t else False
 
 
+def main(disp_amount, x_norm):
+    x_nat = plan_matrix5(x_norm)
+    m = 3
+    N = 14
+    x_norm = np.transpose(np.array(x_norm))
+    global natural_plan
+    natural_plan = generate_factors_table(x_nat)
+    y_arr = generate_y(m, x_nat)
+    if disp_amount == 0:
+        print("Матриця планування:\n  X1  |  X2  |  X3  |X1*X2|X1*X3|X2*X3|X1*X2*X3|  X1\u00b2 |  X2\u00b2 |  X3\u00b2")
+        for i in range(14):
+            print(
+                f"{x_norm[i][0]:^6}|{x_norm[i][1]:^6}|{x_norm[i][2]:^6}|{x_norm[i][3]:^5}|{x_norm[i][4]:^5}|{x_norm[i][5]:^5}|{x_norm[i][6]:^8}|{x_norm[i][7]:^6}|{x_norm[i][8]:^6}|{x_norm[i][9]:^6}")
+
+        print("Матриця планування з натуралізованими значеннями факторів:"
+              "\n  X1  |  X2  |  X3  | X1*X2 | X1*X3 | X2*X3 | X1*X2*X3 |   X1\u00b2  |   X2\u00b2  |  X3\u00b2")
+        for i in range(14):
+            print(
+                f"{x_nat[i][0]:^6}|{x_nat[i][1]:^6}|{x_nat[i][2]:^6}|{x_nat[i][3]:^7}|{x_nat[i][4]:^7}|{x_nat[i][5]:^7}|{x_nat[i][6]:^10}|{x_nat[i][7]:^8}|{x_nat[i][8]:^8}|{x_nat[i][9]:^6}")
+
+        print("     Y1     |     Y2     |     Y3")
+        for i in range(14):
+            print("{:^12}|{:^12}|{:^12}".format(y_arr[i][0], y_arr[i][1], y_arr[i][2]))
+    while not cochran_criteria(m, N, y_arr):
+        m += 1
+    if cochran_criteria(m, N, y_arr):
+        disp_amount += 1
+    y_arr = generate_y(m, natural_plan)
+    coefficients = find_coefficients(natural_plan, y_arr)
+    print_equation(coefficients)
+    importance = student_criteria(m, N, y_arr, coefficients)
+    d = len(list(filter(None, importance)))
+    fisher_criteria(m, N, d, natural_plan, y_arr, coefficients, importance)
+
+    return disp_amount
+
+
 l = 1.73
 x1min = 10
 x1max = 60
@@ -181,29 +218,14 @@ x_norm = [[-1, -1, -1, -1, 1, 1, 1, 1, -1.73, 1.73, 0, 0, 0, 0],
           [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2.9929, 2.9929]]
 
 x_range = [[x1min, x1max], [x2min, x2max], [x3min, x3max]]
-x_nat = plan_matrix5(x_norm)
-m = 3
-N = 14
-x_norm = np.transpose(np.array(x_norm))
-natural_plan = generate_factors_table(x_nat)
-y_arr = generate_y(m, x_nat)
-print("Матриця планування:\n  X1  |  X2  |  X3  |X1*X2|X1*X3|X2*X3|X1*X2*X3|  X1\u00b2 |  X2\u00b2 |  X3\u00b2")
-for i in range(14):
-    print(f"{x_norm[i][0]:^6}|{x_norm[i][1]:^6}|{x_norm[i][2]:^6}|{x_norm[i][3]:^5}|{x_norm[i][4]:^5}|{x_norm[i][5]:^5}|{x_norm[i][6]:^8}|{x_norm[i][7]:^6}|{x_norm[i][8]:^6}|{x_norm[i][9]:^6}")
 
-print("Матриця планування з натуралізованими значеннями факторів:"
-      "\n  X1  |  X2  |  X3  | X1*X2 | X1*X3 | X2*X3 | X1*X2*X3 |   X1\u00b2  |   X2\u00b2  |  X3\u00b2")
-for i in range(14):
-    print(f"{x_nat[i][0]:^6}|{x_nat[i][1]:^6}|{x_nat[i][2]:^6}|{x_nat[i][3]:^7}|{x_nat[i][4]:^7}|{x_nat[i][5]:^7}|{x_nat[i][6]:^10}|{x_nat[i][7]:^8}|{x_nat[i][8]:^8}|{x_nat[i][9]:^6}")
 
-print("     Y1     |     Y2     |     Y3")
-for i in range(14):
-    print("{:^12}|{:^12}|{:^12}".format(y_arr[i][0], y_arr[i][1], y_arr[i][2]))
-while not cochran_criteria(m, N, y_arr):
-    m += 1
-y_arr = generate_y(m, natural_plan)
-coefficients = find_coefficients(natural_plan, y_arr)
-print_equation(coefficients)
-importance = student_criteria(m, N, y_arr, coefficients)
-d = len(list(filter(None, importance)))
-fisher_criteria(m, N, d, natural_plan, y_arr, coefficients, importance)
+disp_amount = 0
+i = 0
+while disp_amount < 10:
+    disp_amount = main(disp_amount, x_norm)
+    i += 1
+
+print("Додаткове завзання")
+print("Кількість ітерацій", i)
+print("Кількість однорідних дисперцій", disp_amount)
